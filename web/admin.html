@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 대시보드 - AI 자동 채점 시스템</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+
+    <div class="container submissions-container">
+        <h1>관리자 대시보드</h1>
+        <a href="index.html" id="logout-button" style="display: none;">로그아웃</a>
+        <h2>전체 제출 내역</h2>
+        <ul id="submissions-list">
+            <!-- admin.js에 의해 채워질 목록 -->
+        </ul>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <!-- Firebase config -->
+    <script src="firebase-config.js"></script>
+
+    <!-- 메인 스크립트 -->
+    <script src="admin.js"></script>
+</body>
+</html>
