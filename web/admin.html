@@ -2,30 +2,43 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>관리자 대시보드 - AI 자동 채점 시스템</title>
-    <link rel="icon" href="data:,">
-    <link rel="stylesheet" href="admin-style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 자동 채점 시스템 - 관리자 대시보드</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="gemini.svg" type="image/svg+xml">
 </head>
 <body>
-
-    <div class="container submissions-container">
+    <div class="container">
         <h1>관리자 대시보드</h1>
-        <a href="index.html" id="logout-button" style="display: none;">로그아웃</a>
-        <h2>전체 제출 내역</h2>
-        <ul id="submissions-list">
-            <!-- admin.js에 의해 채워질 목록 -->
-        </ul>
+        <p>학생들의 과제 제출 현황을 실시간으로 확인합니다.</p>
+
+        <!-- 제출 내역을 표시할 테이블 -->
+        <table id="submissions-table">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>이름</th>
+                    <th>분반</th>
+                    <th>파일</th>
+                    <th>점수</th>
+                    <th>제출일시</th>
+                    <th>상태</th>
+                </tr>
+            </thead>
+            <tbody id="submissions-tbody">
+                <!-- 데이터가 여기에 동적으로 추가됩니다. -->
+            </tbody>
+        </table>
+
+        <p class="admin-link"><a href="index.html">제출 페이지로 돌아가기</a></p>
     </div>
 
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-    <!-- Firebase config -->
+    <!-- Firebase 설정 및 관리자 로직 -->
     <script src="firebase-config.js"></script>
-
-    <!-- 메인 스크립트 -->
     <script src="admin.js"></script>
 </body>
 </html>

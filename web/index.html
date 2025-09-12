@@ -2,55 +2,53 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>AI 자동 채점 시스템</title>
-    <link rel="icon" href="data:,">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 자동 채점 시스템 - 과제 제출</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="gemini.svg" type="image/svg+xml">
 </head>
 <body>
-
-    <!-- 관리자 로그인 모달 -->
-    <div id="admin-login-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>관리자 로그인</h2>
-            <form id="login-form">
-                <label for="username">이메일:</label>
-                <input type="text" id="username" required autocomplete="username">
-                <label for="password">비밀번호:</label>
-                <input type="password" id="password" required autocomplete="current-password">
-                <button type="submit">로그인</button>
-            </form>
-            <p id="login-error" class="error-message"></p>
-        </div>
-    </div>
-
     <div class="container">
-        <a href="#" id="admin-login-button" class="admin-login-link">관리자 로그인</a>
         <h1>과제 제출</h1>
-        <p>AI 채점 시스템에 과제를 제출하세요. 파일은 자동으로 채점됩니다.</p>
-        <form id="upload-form">
-            <div class="form-group">
-                <label for="name">이름:</label>
-                <input type="text" id="name" required>
-            </div>
-            <div class="form-group">
-                <label for="assignment-file">과제 파일:</label>
-                <input type="file" id="assignment-file" accept=".py, .js, .txt, .md" required>
-            </div>
-            <button type="submit" id="submit-button">제출</button>
-        </form>
-        <p id="feedback-message"></p>
+        <p>AI 활용 경험에 대한 보고서를 제출해주세요.</p>
+        
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" placeholder="이름을 입력하세요">
+        </div>
+
+        <!-- 분반 선택 드롭다운 메뉴 추가 -->
+        <div class="form-group">
+            <label for="class">분반</label>
+            <select id="class">
+                <option value="1">1반</option>
+                <option value="2">2반</option>
+                <option value="3">3반</option>
+                <option value="4">4반</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="assignmentFile">과제 파일</label>
+            <input type="file" id="assignmentFile">
+        </div>
+
+        <button id="submitBtn">제출</button>
+
+        <div id="upload-progress-container" style="display: none;">
+            <p>업로드 중: <span id="upload-progress">0%</span></p>
+        </div>
+
+        <p class="admin-link"><a href="admin.html">관리자 페이지로 이동</a></p>
     </div>
 
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-    <!-- Firebase config and main script -->
+    <!-- Firebase 설정 및 제출 로직 -->
     <script src="firebase-config.js"></script>
     <script src="main.js"></script>
-
 </body>
 </html>
