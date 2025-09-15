@@ -25,12 +25,12 @@ SSAFY 14기 부울경 캠퍼스 지역 대표를 맡으며, 저는 학습 이벤
 3.  **관리자 로그인 페이지:** 허가된 관리자만 시스템에 접근할 수 있도록 하는 보안의 첫 단계입니다.
 4.  **관리자 대시보드:** 제출된 모든 과제를 한눈에 확인하고, 클릭 한 번으로 AI 채점을 실행하며, Gemini 어시스턴트를 통해 추가적인 질문도 할 수 있는 핵심 기능 페이지입니다.
 
-![관리자 대시보드](https://i.imgur.com/Vl32hif.png)
+![관리자 대시보드](assets/admin_dashboard.png)
 *<p align="center">관리자 대시보드에서 제출 현황을 확인하고 AI 채점을 실행하는 모습</p>*
 
 <br>
 
-![Gemini 채점 결과](https://i.imgur.com/3s0n51z.png)
+![Gemini 채점 결과](assets/gemini_result.png)
 *<p align="center">Gemini AI가 프롬프트 엔지니어링을 통해 정형화된 결과와 상세한 피드백을 제공하는 모습</p>*
 
 
