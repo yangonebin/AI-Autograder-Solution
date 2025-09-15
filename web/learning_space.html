@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학습 공유 공간 - AI 자동 채점 시스템</title>
+    <link rel="stylesheet" href="style.css?v=2.0">
+    <link rel="icon" href="gemini.svg" type="image/svg+xml">
+</head>
+<body>
+    <header class="main-header">
+        <nav>
+            <a href="index.html">과제 제출</a>
+            <a href="learning_space.html" class="active">학습 공유 공간</a>
+            <a href="admin.html">관리자</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>학습 공유 공간</h1>
+        <p>다른 학생들의 과제를 확인하고 함께 학습하세요.</p>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>분반</th>
+                        <th>파일명</th>
+                        <th>제출일시</th>
+                    </tr>
+                </thead>
+                <tbody id="learning-space-tbody">
+                    <!-- 데이터가 여기에 동적으로 삽입됩니다. -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Firebase 설정 -->
+    <script src="firebase-config.js?v=2.0"></script>
+    <script src="learning_space.js?v=2.0"></script>
+</body>
+</html>

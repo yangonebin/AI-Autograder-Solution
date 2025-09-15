@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>과제 제출 - AI 자동 채점 시스템</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="gemini.svg" type="image/svg+xml">
+</head>
+<body>
+    <header class="main-header">
+        <nav>
+            <a href="index.html" class="active">과제 제출</a>
+            <a href="learning_space.html">학습 공유 공간</a>
+            <a href="admin.html">관리자</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h1>과제 제출</h1>
+        <p>AI가 자동으로 채점해주는 과제 제출 시스템입니다.</p>
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="studentClass">분반</label>
+            <select id="studentClass" required>
+                <option value="">분반 선택</option>
+                <option value="1반">1반</option>
+                <option value="2반">2반</option>
+                <option value="3반">3반</option>
+                <option value="4반">4반</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="assignmentFile">과제 파일</label>
+            <input type="file" id="assignmentFile" required>
+        </div>
+        <button id="submit-btn">제출</button>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <!-- Firebase 설정 -->
+    <script src="firebase-config.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
