@@ -1,199 +1,152 @@
-/* 기본 스타일 */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    background-color: #f4f7f9;
-    color: #333;
-    line-height: 1.6;
-    margin: 0;
-    padding: 20px;
+:root {
+    --primary-color: #4285F4;
+    --danger-color: #EA4335;
+    --card-background: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-color: #dee2e6;
 }
 
-.container {
-    max-width: 1200px;
+/* 로그인 섹션 스타일 */
+#login-section header {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+}
+
+#login-section main {
+    max-width: 400px;
     margin: 0 auto;
-    background-color: #fff;
-    padding: 30px;
+    padding: 2rem;
+    background-color: var(--card-background);
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
 }
 
-header {
-    border-bottom: 2px solid #eef2f5;
-    padding-bottom: 20px;
-    margin-bottom: 30px;
+#login-btn {
+    margin-top: 1.5rem;
 }
 
-h1 {
-    color: #2c3e50;
-    font-size: 2em;
-    margin: 0;
+/* 대시보드 레이아웃 */
+#dashboard-section > header {
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
-p {
-    margin-top: 5px;
-    color: #7f8c8d;
+#dashboard-section > main {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 992px) {
+    #dashboard-section > main {
+        grid-template-columns: 3fr 1fr;
+    }
+}
+
+/* 제출 목록 및 챗봇 섹션 카드 스타일 */
+#submission-list,
+#chatbot-section {
+    background-color: var(--card-background);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: 1.5rem 2rem;
 }
 
 h2 {
-    color: #34495e;
-    border-bottom: 1px solid #eef2f5;
-    padding-bottom: 10px;
-    margin-top: 40px; /* 섹션 간 간격 */
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+    margin-top: 0;
 }
 
-/* 테이블 스타일 */
-.table-container {
-    overflow-x: auto; /* 작은 화면에서 가로 스크롤 */
+/* 테이블 상태 값 스타일 */
+td:nth-child(6) {
+    font-weight: 500;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
+td:nth-child(6)[data-status="pending"] { color: #fbbc05; }
+td:nth-child(6)[data-status="grading"] { color: #4285f4; }
+td:nth-child(6)[data-status="graded"]  { color: #34a853; }
+td:nth-child(6)[data-status="error"]   { color: #ea4335; }
 
-thead {
-    background-color: #f8f9fa;
-}
 
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
-    vertical-align: middle;
-}
-
-th {
-    font-weight: 600;
-    color: #495057;
-}
-
-/* 클릭 가능한 행 스타일 */
-tbody tr.clickable-row {
-    cursor: pointer;
-}
-
-tbody tr.clickable-row:hover {
-    background-color: #f1f3f5;
-}
-
-/* 상태 태그 스타일 */
-.status {
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.85em;
-    font-weight: 600;
-    text-align: center;
-    display: inline-block;
-    min-width: 70px;
-}
-
-.status-pending { background-color: #ffc107; color: #333; }
-.status-grading { background-color: #17a2b8; color: #fff; }
-.status-graded { background-color: #28a745; color: #fff; }
-.status-error { background-color: #dc3545; color: #fff; }
-
-/* 피드백 툴팁 스타일 */
-.feedback-cell {
-    max-width: 250px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    cursor: help;
-    position: relative;
-}
-
-.feedback-cell:hover::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    z-index: 10;
-    white-space: pre-wrap; /* 줄 바꿈 허용 */
-    width: 300px; /* 툴팁 너비 */
-    left: 0;
-    top: 100%;
-    margin-top: 5px;
-    font-size: 0.9em;
-}
-
-/* 챗봇 섹션 스타일 */
-#chatbot-section {
-    margin-top: 40px;
-}
-
+/* 챗봇 스타일 */
 #chat-container {
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
-    height: 400px; /* 채팅창 높이 고정 */
+    height: 65vh; /* 뷰포트 높이에 따라 조절 */
 }
 
 #chat-messages {
     flex-grow: 1;
-    padding: 20px;
     overflow-y: auto;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     background-color: #f8f9fa;
 }
 
 .chat-message {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     padding: 10px 15px;
-    border-radius: 18px;
-    max-width: 80%;
+    border-radius: 20px;
+    max-width: 85%;
     line-height: 1.5;
+    word-wrap: break-word;
 }
 
 .user-message {
-    background-color: #007bff;
+    background-color: var(--primary-color);
     color: white;
     align-self: flex-end;
     margin-left: auto;
+    border-bottom-right-radius: 5px;
 }
 
 .bot-message {
     background-color: #e9ecef;
-    color: #333;
+    color: var(--text-color);
     align-self: flex-start;
+    border-bottom-left-radius: 5px;
 }
 
 #chat-input-container {
     display: flex;
-    border-top: 1px solid #dee2e6;
-    padding: 10px;
-    background-color: #fff;
 }
 
 #chat-input {
     flex-grow: 1;
-    border: 1px solid #ced4da;
-    border-radius: 20px;
-    padding: 10px 15px;
-    font-size: 1em;
-    outline: none;
-}
-
-#chat-input:focus {
-    border-color: #80bdff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-right: none;
+    border-radius: 20px 0 0 20px;
 }
 
 #chat-send-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
-    margin-left: 10px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 600;
+    width: auto;
+    border-radius: 0 20px 20px 0;
+    background: var(--primary-color);
+    font-size: 1rem;
+    padding: 0.8rem 1.2rem;
 }
 
 #chat-send-btn:hover {
-    background-color: #0056b3;
+    background: #3367d6;
+}
+
+/* 로그아웃 버튼 */
+#sign-out-btn {
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    float: right;
+}
+
+#sign-out-btn:hover {
+    background: #c53727;
 }
