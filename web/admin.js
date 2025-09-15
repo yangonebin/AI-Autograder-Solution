@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Firebase 앱 초기화
+    // Firebase 초기화 확인
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     } else {
@@ -7,98 +7,167 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const db = firebase.firestore();
-    const submissionsTableBody = document.getElementById('submissions-tbody');
+    const functions = firebase.functions();
 
-    // URL로부터 파일을 강제로 다운로드하는 함수
-    const forceDownload = (url, fileName) => {
-        fetch(url)
-            .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok.');
-                return response.blob(); // 응답을 Blob으로 변환
-            })
-            .then(blob => {
-                const blobUrl = window.URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = blobUrl;
-                link.download = fileName;
-                document.body.appendChild(link);
-                link.click(); // 링크를 프로그래매틱하게 클릭하여 다운로드 실행
-                document.body.removeChild(link);
-                window.URL.revokeObjectURL(blobUrl); // 메모리 해제
-            })
-            .catch(error => {
-                console.error('Download failed:', error);
-                alert('파일을 다운로드하는 중 오류가 발생했습니다.');
-            });
-    };
+    // HTML 요소
+    const loginSection = document.getElementById('login-section');
+    const dashboardSection = document.getElementById('dashboard-section');
+    const loginBtn = document.getElementById('login-btn');
+    const userIdInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const loginError = document.getElementById('login-error');
+    const signOutBtn = document.getElementById('sign-out-btn');
+    const submissionsTbody = document.getElementById('submissions-tbody');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const chatSendBtn = document.getElementById('chat-send-btn');
+    
+    // 페이지 로드 시 로그인 상태 확인
+    if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
+        loginSection.style.display = 'none';
+        dashboardSection.style.display = 'block';
+        signOutBtn.style.display = 'block';
+        initializeDashboard();
+    } else {
+        loginSection.style.display = 'block';
+        dashboardSection.style.display = 'none';
+        signOutBtn.style.display = 'none';
+    }
 
-    // Firestore에서 제출 내역 실시간으로 가져와 표로 표시
-    db.collection("submissions").orderBy("submittedAt", "desc").onSnapshot((snapshot) => {
-        submissionsTableBody.innerHTML = ''; 
-        if (snapshot.empty) {
-            submissionsTableBody.innerHTML = '<tr><td colspan="7">제출 내역이 없습니다.</td></tr>';
+    // 로그인 버튼 클릭 이벤트
+    loginBtn.addEventListener('click', () => {
+        const userId = userIdInput.value;
+        const password = passwordInput.value;
+        loginError.textContent = '';
+
+        if (!userId || !password) {
+            loginError.textContent = 'ID와 비밀번호를 모두 입력해주세요.';
             return;
         }
 
-        let counter = 1;
-        snapshot.forEach(doc => {
-            const sub = doc.data();
-            const row = document.createElement('tr');
-            
-            let statusText = '';
-            let scoreDisplay = '';
-
-            switch (sub.status) {
-                case 'pending':
-                    statusText = '<span>채점 대기 중</span>';
-                    break;
-                case 'grading':
-                    statusText = '<span class="status-grading">채점 중...</span>';
-                    break;
-                case 'graded':
-                    statusText = '<span class="status-graded">✅ 채점 완료</span>';
-                    let scoresTooltip = '항목별 점수:\n';
-                    if(sub.scores) {
-                        for(const key in sub.scores) {
-                            scoresTooltip += `${key}: ${sub.scores[key]}\n`;
-                        }
-                    }
-                    scoresTooltip += `\n종합 피드백:\n${sub.feedback}`;
-                    scoreDisplay = `<span title="${scoresTooltip}">${sub.score}점</span>`;
-                    break;
-                case 'grading_failed':
-                    statusText = `<span class="status-failed" title="${sub.error}">❌ 채점 실패</span>`;
-                    scoreDisplay = '-';
-                    break;
-                default:
-                    statusText = `<span>${sub.status || '알 수 없음'}</span>`;
-            }
-            
-            // innerHTML로 기본 행 구조 생성
-            row.innerHTML = `
-                <td>${counter}</td>
-                <td>${sub.name || '-'}</td>
-                <td>${sub.studentClass ? sub.studentClass + '반' : '-'}</td>
-                <td></td> <!-- 파일 링크는 아래에서 동적으로 채움 -->
-                <td>${scoreDisplay}</td>
-                <td>${sub.submittedAt ? new Date(sub.submittedAt.seconds * 1000).toLocaleString() : 'N/A'}</td>
-                <td>${statusText}</td>
-            `;
-
-            // 파일 링크 셀을 동적으로 생성하고 이벤트 리스너 추가
-            const fileCell = row.children[3];
-            const fileLink = document.createElement('a');
-            fileLink.href = '#';
-            fileLink.textContent = sub.fileName;
-            fileLink.style.cursor = 'pointer';
-            fileLink.onclick = (e) => {
-                e.preventDefault(); // 기본 동작 방지
-                forceDownload(sub.downloadURL, sub.fileName);
-            };
-            
-            fileCell.appendChild(fileLink);
-            submissionsTableBody.appendChild(row);
-            counter++;
-        });
+        db.collection('admins').where('username', '==', userId).where('password', '==', password).get()
+            .then(snapshot => {
+                if (snapshot.empty) {
+                    loginError.textContent = 'ID 또는 비밀번호가 잘못되었습니다.';
+                } else {
+                    sessionStorage.setItem('isAdminLoggedIn', 'true');
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error("로그인 쿼리 오류:", error);
+                loginError.textContent = '로그인 중 오류가 발생했습니다.';
+            });
     });
+
+    // 로그아웃
+    signOutBtn.addEventListener('click', () => {
+        sessionStorage.removeItem('isAdminLoggedIn');
+        location.reload();
+    });
+
+    function initializeDashboard() {
+        loadSubmissions();
+        setupChatbot();
+    }
+
+    // 과제 목록 로드 (다운로드 기능 수정)
+    function loadSubmissions() {
+        db.collection('submissions').orderBy('submittedAt', 'desc').onSnapshot(snapshot => {
+            submissionsTbody.innerHTML = '';
+            let counter = 1;
+            snapshot.forEach(doc => {
+                const submission = doc.data();
+                const row = document.createElement('tr');
+                const fileName = submission.fileName || '파일 없음';
+                const downloadURL = submission.downloadURL;
+
+                row.innerHTML = `
+                    <td>${counter++}</td>
+                    <td>${submission.name}</td>
+                    <td>${submission.studentClass}</td>
+                    <td class="file-cell"></td>
+                    <td>${submission.submittedAt ? submission.submittedAt.toDate().toLocaleString('ko-KR') : 'N/A'}</td>
+                    <td>${submission.status || 'pending'}</td>
+                    <td>${submission.grade || 'N/A'}</td>
+                    <td>${submission.feedback || 'N/A'}</td>
+                `;
+
+                const fileCell = row.querySelector('.file-cell');
+
+                if (downloadURL) {
+                    const fileLink = document.createElement('a');
+                    fileLink.href = '#';
+                    fileLink.textContent = fileName;
+                    fileLink.style.cursor = 'pointer';
+                    fileLink.style.textDecoration = 'underline';
+
+                    fileLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const originalText = fileLink.textContent;
+                        fileLink.textContent = '준비 중...';
+
+                        fetch(downloadURL)
+                            .then(res => res.blob())
+                            .then(blob => {
+                                const blobUrl = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.style.display = 'none';
+                                a.href = blobUrl;
+                                a.download = fileName;
+                                document.body.appendChild(a);
+                                a.click();
+                                window.URL.revokeObjectURL(blobUrl);
+                                a.remove();
+                                fileLink.textContent = originalText;
+                            }).catch(() => {
+                                fileLink.textContent = '다운로드 실패';
+                                alert('파일 다운로드에 실패했습니다.');
+                            });
+                    });
+                    fileCell.appendChild(fileLink);
+                } else {
+                    fileCell.textContent = fileName;
+                }
+
+                submissionsTbody.appendChild(row);
+            });
+        });
+    }
+
+    function setupChatbot() {
+        const askChatbot = functions.httpsCallable('askChatbot');
+        const sendMessage = () => {
+            const message = chatInput.value.trim();
+            if (message === '' || chatSendBtn.disabled) return;
+
+            appendMessage(message, 'user');
+            chatInput.value = '';
+            chatInput.disabled = true;
+            chatSendBtn.disabled = true;
+
+            askChatbot({ message: message })
+                .then(result => appendMessage(result.data.reply, 'bot'))
+                .catch(error => {
+                    console.error("챗봇 오류:", error);
+                    appendMessage('오류가 발생했습니다.', 'bot');
+                })
+                .finally(() => {
+                    chatInput.disabled = false;
+                    chatSendBtn.disabled = false;
+                    chatInput.focus();
+                });
+        };
+
+        chatSendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', e => e.key === 'Enter' && sendMessage());
+    }
+    
+    function appendMessage(text, sender) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chat-message', `${sender}-message`);
+        messageElement.textContent = text;
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 });
