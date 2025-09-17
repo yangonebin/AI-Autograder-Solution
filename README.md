@@ -1,6 +1,6 @@
 # 비전공자의 52시간 분투기: 백엔드 없이 AI 채점 자동화 솔루션 구축기
 
-🚀 **라이브 데모:** [https://ai-autograder-solution.web.app/index.html](https://ai-autograder-solution.web.app/index.html)
+🚀 **홈페이지 바로가기:** [https://ai-autograder-solution.web.app/index.html](https://ai-autograder-solution.web.app/index.html)
 
 ## Prologue. "이건 뭔가 잘못됐다."
 
